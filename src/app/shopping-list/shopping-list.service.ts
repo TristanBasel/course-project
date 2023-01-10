@@ -15,6 +15,10 @@ export class ShoppingListService {
     return this.ingredients.slice();
   }
 
+  getIngredient(index: number){
+    return this.ingredients[index];
+  }
+
   addIngredient(ingredient: Ingredient){
     this.ingredients.push(ingredient);
     this.ingredientsChanged.next(this.ingredients.slice());
@@ -26,5 +30,15 @@ export class ShoppingListService {
     // }
     this.ingredients.push(...ingredients);// this is a method to an entire array as individual entries, much faster than for loop as less events are fired.
     this.ingredientsChanged.next(this.ingredients.slice());// have to do this because else we send the unchanged array.
+  }
+
+  updateIngredient(index: number, newIngredient: Ingredient){
+    this.ingredients[index] = newIngredient;
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1); // remove the element at the index value in the array
+    this.ingredientsChanged.next(this.ingredients.slice());// let the service know that the ingredients have been updated.
   }
 }
