@@ -21,7 +21,7 @@ export class RecipeDetailsComponent implements OnInit{
     this.route.params.subscribe(
       (params: Params) => {
         this.id = +params['id'];// the + is because in the route it's a string, but we want a number.
-        this.recipe = this.recipeService.getRecipeByID(this.id);
+        this.recipe = this.recipeService.getRecipe(this.id);
       }
     );
 

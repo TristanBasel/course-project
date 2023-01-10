@@ -31,7 +31,7 @@ export class RecipeService {
     return this.recipes.slice();// don't want to pass the actual array only a copy, else it could be changed, so use slice, the whole thing
   }
 
-  getRecipeByID(index: number) {
+  getRecipe(index: number) {
     return this.recipes[index];
   }
 
