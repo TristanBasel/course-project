@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-md-offset-3"><!--    This actually takes up full width available on all screen sizes, that's why it gets used. -->
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+      <div class="form-group">
+        <label for="email">Email</label> <!-- This for="email" likes to the id of the input that you set-->
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          ngModel
+          name="email"
+          required
+          email
+        >
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label> <!-- This for="email" likes to the id of the input that you set-->
+        <input
+          type="email"
+          id="password"
+          class="form-control"
+          ngModel
+          name="password"
+          required
+          minlength="6"
+        >
+      </div>
+      <div>
+        <button
+          class="btn btn-primary"
+          type="submit"
+          style="margin-right: 5px"
+          [disabled]="!authForm.valid"
+        >{{ isLoginMode ? 'Login' : 'Sign Up' }}</button>|
+        <button
+          class="btn btn-primary"
+          (click)="onSwitchMode()"
+          type="button">
+          Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
