@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Recipe } from "../recipes/recipe.model";
 import { RecipeService } from "../recipes/recipe.service";
+import {map, tap} from "rxjs";
 
 @Injectable({providedIn: 'root'})// makes it available app wide and allows other services to be injected into it.
 export class DataStorageService {
@@ -25,10 +26,21 @@ export class DataStorageService {
 
   fetchRecipes() {
     // fetch the data from the "DATABASE".
-    this.http
-      .get<Recipe[]>('https://course-project-recipe-bo-b33d2-default-rtdb.firebaseio.com/recipes.json')// need to the the get method what type the data should be.
-      .subscribe(recipes => {
-        this.recipeService.setRecipes(recipes)// get an error if you haven't informed typescript of the type of data that should be received.
-      })
+    return this.http
+      .get<Recipe[]>('https://course-project-recipe-bo-b33d2-default-rtdb.firebaseio.com/recipes.json')// need to use the get method what type the data should be.
+      .pipe(map(recipes => {// operator that allows data transformation
+        return recipes.map(recipe => {//called on an array method that allows us to transform elements in the array, executed for each recipe (anonymous function).
+          return {
+            ...recipe,
+            ingredients: recipe.ingredients ? recipe.ingredients : []
+          };
+          // spread operator to copy the properties of property, then ingredients is set using a turn array expression ? check if recipe ingredients is trueish,
+          // which it is if it is an array of zero or more elements, then set to ingredients else : an empty array.
+        });
+      }),
+        tap(recipes => {
+          this.recipeService.setRecipes(recipes)// get an error if you haven't informed typescript of the type of data that should be received.
+        })
+      )
   }
 }
