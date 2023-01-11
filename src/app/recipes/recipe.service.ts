@@ -56,4 +56,9 @@ export class RecipeService {
     this.recipes.splice(index,1);
     this.recipesChanged.next(this.recipes.slice());// remember .next() is like calling .emit, but for a subject.
   }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice()); // notify that the recipes have been updated.
+  }
 }
