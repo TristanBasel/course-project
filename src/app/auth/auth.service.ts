@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {catchError, Subject, tap, throwError} from "rxjs";
-import {User} from "./user.model";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { User } from "./user.model";
 
 export interface AuthResponseData {// this interface is to create a model type thing for the response data from the signup request.
   kind: string;
@@ -17,7 +17,8 @@ export interface AuthResponseData {// this interface is to create a model type t
 export class AuthService {
 
   // store user as a subject:
-  user = new Subject<User>();//next a new user when there is a new user or token expired.
+  user = new BehaviorSubject<User>(null);//next a new user when there is a new user or token expired.
+
   constructor(private http: HttpClient) {// need this client to make http requests.
   }
   signup(email: string, password: string) {

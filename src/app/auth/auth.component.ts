@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import {NgForm} from "@angular/forms";
 import {AuthResponseData, AuthService} from "./auth.service";
 import {Observable} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-auth',
@@ -12,8 +13,8 @@ export class AuthComponent {
   isLoading = false;// display that spinner if waiting for response
   error: string = null;//handle the errors.
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService,// for authentication service functions, those that you need but don't want in the component itself.
+              private router: Router) {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;// simply reverses the value.
@@ -40,6 +41,7 @@ export class AuthComponent {
       resData => {// we of course get the response data
         console.log(resData);
         this.isLoading = false;
+        this.router.navigate(['/recipes']);
         },
       errorMessage => {// We may have to handle any error occurring.
         console.log(errorMessage);
