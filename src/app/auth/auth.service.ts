@@ -19,6 +19,7 @@ export class AuthService {
 
   // store user as a subject:
   user = new BehaviorSubject<User>(null);//next a new user when there is a new user or token expired.
+  private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient,
               private router: Router) {// need this client to make http requests.
@@ -69,6 +70,17 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    if(this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, 60000);//expirationDuration);
   }
 
 
@@ -83,6 +95,7 @@ export class AuthService {
       expirationDate
     );
     this.user.next(user);// allows us to set the next user in our application
+    this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user)); // this creates a cookie. the stringify turns js to a string.
   }
 
@@ -98,6 +111,7 @@ export class AuthService {
     if (!userData) {
       return;
     }
+
     const loadedUser = new User(
       userData.email,
       userData.id,
@@ -107,6 +121,10 @@ export class AuthService {
 
     if (loadedUser.token) {// only true if the token is not expired.
       this.user.next(loadedUser)// if the user is valid we can actually load the user else might need a new token.
+      const expirationDuration =
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
+      this.autoLogout(expirationDuration);
     }
   }
 
@@ -125,9 +143,6 @@ export class AuthService {
       case 'INVALID_PASSWORD':
         errorMessage = 'Incorrect password entered.';
         break;
-      // case 'EMAIL_NOT_FOUND':
-      //   errorMessage = 'This email does not exist';
-      //   break;
     }
     return throwError(errorMessage);
   }

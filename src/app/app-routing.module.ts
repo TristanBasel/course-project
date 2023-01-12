@@ -7,11 +7,16 @@ import { RecipeDetailsComponent } from "./recipes/recipe-details/recipe-details.
 import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component";
 import { RecipesResolverService } from "./recipes/recipes-resolver.service";
 import {AuthComponent} from "./auth/auth.component";
+import {AuthGuard} from "./auth/auth.guard";
 
 const appRoutes: Routes = [
-  {path: '', redirectTo: '/auth', pathMatch: 'full'},//the pathMatch full is because
+  {path: '', redirectTo: '/recipes', pathMatch: 'full'},//the pathMatch full is because
   // by default angular checks if the path provided is a segment of requested path, not the entire path.
-  {path: 'recipes', component: RecipesComponent, children: [
+  {
+    path: 'recipes',
+    component: RecipesComponent,
+    canActivate: [AuthGuard],
+    children: [
       { path: '', component: RecipeStartComponent },//, resolve: [RecipesResolverService]
       { path: 'new', component: RecipeEditComponent },// This needs to be before anything with a colon else it'll try get the colon information
       { path: ':id', component: RecipeDetailsComponent, resolve: [RecipesResolverService] },
