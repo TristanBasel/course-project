@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { AppRoutingModule } from "./app-routing.module";
-import { HttpClientModule } from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import { AppComponent } from './app.component';
 import { HeaderComponent} from "./header/header.component";
@@ -18,6 +18,7 @@ import { LoadingSpinnerComponent } from "./shared/loading-spinner/loading-spinne
 import { AuthComponent } from "./auth/auth.component";
 import { DropdownDirective } from "./shared/dropdown.directive";
 import { RecipeService } from "./recipes/recipe.service";
+import { AuthInterceptorService } from "./auth/auth-interceptor.service";
 
 
 @NgModule({
@@ -43,7 +44,14 @@ import { RecipeService } from "./recipes/recipe.service";
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [RecipeService],// Shopping list was added in a different way, view the @Injectable route, if i remember correctly.
+  providers: [
+    RecipeService,// Shopping list was added in a different way, view the @Injectable route, if i remember correctly.
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

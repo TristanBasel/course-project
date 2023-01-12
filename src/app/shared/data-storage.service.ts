@@ -28,17 +28,11 @@ export class DataStorageService {
 
   fetchRecipes() {
     // fetch the data from the "DATABASE".
-    return this.authService.user.pipe(
-      take(1), // only takes one user using take(), and don't need to manually unsubscribe, take handles that.
-      exhaustMap(user => {// waits for first observable to complete and returns a new observable with the inner observable.
-        return this.http
-          .get<Recipe[]>(
-            'https://course-project-recipe-bo-b33d2-default-rtdb.firebaseio.com/recipes.json',// need to use the get method what type the data should be.
-            {
-              params: new HttpParams().set('auth', user.token)
-            }
-          );
-      }),
+    return this.http
+      .get<Recipe[]>(
+        'https://course-project-recipe-bo-b33d2-default-rtdb.firebaseio.com/recipes.json'// need to use the get method what type the data should be.
+        )
+      .pipe(
       map(recipes => {// operator that allows data transformation
         return recipes.map(recipe => {//called on an array method that allows us to transform elements in the array, executed for each recipe (anonymous function).
           return {
