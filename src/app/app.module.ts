@@ -12,11 +12,12 @@ import { RecipeDetailsComponent } from './recipes/recipe-details/recipe-details.
 import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
-import { DropdownDirective } from "./shared/dropdown.directive";
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { LoadingSpinnerComponent } from "./shared/loading-spinner/loading-spinner.component";
+import { AuthComponent } from "./auth/auth.component";
+import { DropdownDirective } from "./shared/dropdown.directive";
 import { RecipeService } from "./recipes/recipe.service";
-import {AuthComponent} from "./auth/auth.component";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {AuthComponent} from "./auth/auth.component";
     DropdownDirective,
     RecipeStartComponent,
     RecipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
