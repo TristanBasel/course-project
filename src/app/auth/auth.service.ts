@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
 import { User } from "./user.model";
+import {Router} from "@angular/router";
 
 export interface AuthResponseData {// this interface is to create a model type thing for the response data from the signup request.
   kind: string;
@@ -19,7 +20,8 @@ export class AuthService {
   // store user as a subject:
   user = new BehaviorSubject<User>(null);//next a new user when there is a new user or token expired.
 
-  constructor(private http: HttpClient) {// need this client to make http requests.
+  constructor(private http: HttpClient,
+              private router: Router) {// need this client to make http requests.
   }
   signup(email: string, password: string) {
     // here we want to make a signup request to the firebase api.
@@ -62,6 +64,11 @@ export class AuthService {
           )
         })
       );
+  }
+
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
   }
 
 

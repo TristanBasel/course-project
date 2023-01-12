@@ -35,4 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // helpful now for the recipe-resolver service, we can just return the observable from the resolve function.
   }
 
+  onLogout() {
+    this.authService.logout();
+  }
+
 }
