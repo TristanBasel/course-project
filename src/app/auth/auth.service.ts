@@ -83,6 +83,31 @@ export class AuthService {
       expirationDate
     );
     this.user.next(user);// allows us to set the next user in our application
+    localStorage.setItem('userData', JSON.stringify(user)); // this creates a cookie. the stringify turns js to a string.
+  }
+
+  //Now how do we retrieve this data if we want to use it again "auto login effect"
+  autoLogin() {
+    const userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData'))// we set this name, userData, it is a string snapshot
+
+    if (!userData) {
+      return;
+    }
+    const loadedUser = new User(
+      userData.email,
+      userData.id,
+      userData._token,
+      new Date(userData._tokenExpirationDate)
+    );
+
+    if (loadedUser.token) {// only true if the token is not expired.
+      this.user.next(loadedUser)// if the user is valid we can actually load the user else might need a new token.
+    }
   }
 
   private handleError(errorRes: HttpErrorResponse) {

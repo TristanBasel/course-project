@@ -9,7 +9,7 @@ import { RecipesResolverService } from "./recipes/recipes-resolver.service";
 import {AuthComponent} from "./auth/auth.component";
 
 const appRoutes: Routes = [
-  {path: '', redirectTo: '/recipes', pathMatch: 'full'},//the pathMatch full is because
+  {path: '', redirectTo: '/auth', pathMatch: 'full'},//the pathMatch full is because
   // by default angular checks if the path provided is a segment of requested path, not the entire path.
   {path: 'recipes', component: RecipesComponent, children: [
       { path: '', component: RecipeStartComponent },//, resolve: [RecipesResolverService]
